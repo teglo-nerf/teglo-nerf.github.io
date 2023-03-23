@@ -7,7 +7,7 @@
   <meta name="description" content="NeRF with Unposed Images">
   <meta property="og:title" content="TEGLO"/>
   <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X630-->
-  <meta property="og:image" content="static/images/melon_emoji.png" />
+  <meta property="og:image" content="static/images/high_res.png" />
   <meta property="og:image:width" content="1200"/>
   <meta property="og:image:height" content="630"/>
 
@@ -15,7 +15,7 @@
   <meta name="twitter:title" content="TEGLO">
   <meta name="twitter:description" content="Textured EG3D-GLO">
   <!-- Path to banner image, should be in the path listed below. Optimal dimenssions are 1200X600-->
-  <meta name="twitter:image" content="static/images/melon_emoji.png">
+  <meta name="twitter:image" content="static/images/high_res.png">
   <meta name="twitter:card" content="summary_large_image">
   <!-- Keywords for your paper to be indexed by-->
   <meta name="keywords" content="Textured EG3D-GLO">
@@ -23,7 +23,7 @@
 
 
   <title>TEGLO: High Fidelity Canonical Texture Mapping from Single-View Images</title>
-  <link rel="icon" type="image/x-icon" href="static/images/melon_emoji.png">
+  <link rel="icon" type="image/x-icon" href="static/images/high_res.png">
   <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
   rel="stylesheet">
 
@@ -50,7 +50,7 @@
       <div class="container is-max-desktop">
         <div class="columns is-centered">
           <div class="column has-text-centered">
-            <h1 class="title is-1 publication-title"><img src="static/images/melon_emoji.png" width="35"> TEGLO<br>High Fidelity Canonical Texture Mapping from Single-View Images</h1>
+            <h1 class="title is-1 publication-title"><img src="static/images/high_res.png" width="35"> TEGLO<br>High Fidelity Canonical Texture Mapping from Single-View Images</h1>
             <div class="is-size-5 publication-authors">
               <!-- Paper authors -->
               <span class="author-block">
@@ -119,20 +119,20 @@
   </div>
 </section>
 
-
 <!-- Teaser video-->
 <section class="hero teaser">
   <div class="container is-max-desktop">
     <div class="hero-body">
       <video poster="" id="tree" autoplay controls muted loop height="100%">
         <!-- Your video here -->
-        <source src="static/videos/lego_replication_order_2.mp4"
+        <source src="static/videos/teaser_old.mp4"
         type="video/mp4">
       </video>
       <h2 class="subtitle has-text-centered">
-        <!-- Convergence of MELON on "lego" scene from unposed images.<br>
-        <b>Left</b> - Novel views throughout optimization.<br>
-        <b>Right</b> - Predicted view directions (projected azimuth/elevation). -->
+        TEGLO results: Multi-view consistent novel view synthesis from single-view.<br>
+        <b>Left</b> - Target image from CelebA-HQ.
+        <b>Center</b> - Textured orbit.
+        <b>Right</b> - Textured orbit with edits.
       </h2>
     </div>
   </div>
@@ -164,6 +164,118 @@
 </section>
 <!-- End paper abstract -->
 
+<section class="section hero">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Method</h2>
+        <img src="static/images/teglo_infer.png" alt="teaser" class="center">
+        <div class="content has-text-justified">
+        TEGLO takes a single-view image and its approximate camera pose to map the pixels onto a texture. 
+          Then, to render the object from a different view, we extract the 3D surface points from the trained NeRF and use the dense correspondences to
+          obtain the color for each pixel from the mapped canonical texture. Optionally, TEGLO can take texture edits and transfer textures across objects.
+        <br/>
+        <div class="content has-text-justified">
+          Our key insight is that by disentangling texture and geometry using the 3D surface points of objects to learn a dense correspondence 
+          mapping via a 2D canonical coordinate space, we can extract a texture for each object. Then, by using the learned correspondences to map 
+          the pixels from the input image of the object onto the texture, we enable preserving high-frequency details. As expected, copying the 
+          input image pixels onto the texture accurately allows near perfect reconstruction while preserving high-fidelity multi-view consistent 
+          representation with high-frequency details. In this work, we present TEGLO, consisting of a tri-plane and GLO-based conditional NeRF and 
+          a method to learn dense correspondences to enable challenging tasks such as texture transfer, texture editing and high-fidelity 3D reconstruction 
+          even at large megapixel resolutions. We also show that TEGLO enables single-view 3D reconstruction with no constraints on resolution by 
+          inverting the image into the latent table without requiring PTI or model fine-tuning.
+        <br/><br/>
+        <img src="static/images/teglo_model.png" alt="teaser" class="center">
+        <!-- <div class="content has-text-justified"> -->
+          TEGLO Stage-1 (left) uses a tri-plane and GLO based conditional NeRF to learn a per-object table of latents to reconstruct the single-view image collection. 
+          TEGLO Stage-2 (right) learns dense correspondences via a 2D canonical coordinate space.
+          <!-- MELON simultaneously trains a CNN encoder that maps images to camera pose in SO(3), and a neural radiance field of the scene.
+          It does not require CNN pre-training, and is able to infer camera pose in object centered configurations entirely "ab-initio", without any pose initialization whatsoever.
+          To cope with the presence of local minima in the low-dimensional latent space SO(3), we introduce a novel <i>modulo loss</i> that replicates the encoder pose output and only backpropagates the view with the lowest photometric error. -->
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="section hero">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Results</h2>
+        
+        <!-- <h3 class="title is-4">Single View 3D Reconstruction</h3> -->
+        <img src="static/images/teglo_teaser.png" alt="results" class="center">
+        <div class="content has-text-centered">
+          <br>Demonstrating TEGLO for high fidelity 3D reconstruction and multi-view consistent texture representation and
+          texture editing from single-view image collections of objects.
+        </div>
+
+        <h3 class="title is-4">Reconstruction of Train Data</h3>
+        <img src="static/images/teglo_qual.png" alt="results" class="center">
+        <div class="content has-text-centered">
+          <br>Qualitative comparison with relevant 3D-aware baselines at 256x256 resolution for CelebA-HQ.
+        </div>
+
+        <h3 class="title is-4">Single View 3D Reconstruction</h3>
+        <img src="static/images/teglo_sv3d.png" alt="results" class="center">
+        <div class="content has-text-centered">
+          <br>Results for TEGLO trained on FFHQ data and evaluated on CelebA-HQ image targets.
+        </div>
+
+        <h3 class="title is-4">Texture Transfer</h3>
+        <img src="static/images/teglo_transfer.png" alt="results" class="center">
+        <div class="content has-text-centered">
+          <br>Texture transfer results with CelebA-HQ. (Top row shows CelebA-HQ image targets).
+        </div>
+
+        <h3 class="title is-4">Texture Editing</h3>
+        <img src="static/images/teglo_edit.png" alt="results" class="center">
+        <div class="content has-text-centered">
+          <!-- <br>Qualitative results for texture edits. -->
+        </div>
+
+        <h3 class="title is-4">Textured Representation of Complex Objects</h3>
+        <img src="static/images/teglo_complex.png" alt="results" class="center">
+        <div class="content has-text-centered">
+          <!-- <br>Qualitative results for texture edits. -->
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- <section class="section hero">
+  <div class="container is-max-desktop">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <div id="wrapper">
+        <video id="home1" poster="" autoplay controls muted loop>
+        <source type="video/mp4" src="static/videos/id_11.mp4" />
+        </video>
+        <video id="home2" poster="" autoplay controls muted loop >
+        <source type="video/mp4" src="static/videos/id_11_edit.mp4" />
+        </video>
+        <video id="home3" poster="" autoplay controls muted loop >
+        <source type="video/mp4" src="static/videos/id_124.mp4" />
+        </video>
+        <video id="home4" poster="" autoplay controls muted loop >
+        <source type="video/mp4" src="static/videos/id_124_edit.mp4" />
+        </video>
+        <div class="clear"></div>
+        <h2 class="subtitle has-text-centered">
+          Convergence of MELON on "lego" scene from unposed images.<br>
+          <b>Left</b> - Novel views throughout optimization.<br>
+          <b>Right</b> - Predicted view directions (projected azimuth/elevation).
+        </h2>
+        </div>
+      </div>
+    </div>
+  </div>
+</section> -->
 
 <!-- Image carousel -->
 <section class="hero is-small">
@@ -172,85 +284,74 @@
       <div id="results-carousel" class="carousel results-carousel">
        <div class="item">
         <!-- Your image here -->
-        <img src="static/images/carousel1.jpg" alt="MY ALT TEXT"/>
+        <img src="static/images/teglo_highres_1.png" alt="MY ALT TEXT"/>
         <h2 class="subtitle has-text-centered">
-          First image description.
+          Novel views in high-resolution (1024x1024) with high-frequency details.
         </h2>
       </div>
       <div class="item">
         <!-- Your image here -->
-        <img src="static/images/carousel2.jpg" alt="MY ALT TEXT"/>
+        <img src="static/images/teglo_highres_2.png" alt="MY ALT TEXT"/>
         <h2 class="subtitle has-text-centered">
-          Second image description.
+          Novel views in high-resolution (1024x1024) with high-frequency details.
         </h2>
       </div>
       <div class="item">
-        <!-- Your image here -->
-        <img src="static/images/carousel3.jpg" alt="MY ALT TEXT"/>
+        <img src="static/images/teglo_sv3d_1.png" alt="MY ALT TEXT"/>
         <h2 class="subtitle has-text-centered">
-         Third image description.
+         Single View 3D Reconstruction.
        </h2>
      </div>
-     <div class="item">
-      <!-- Your image here -->
+     <!-- <div class="item">
       <img src="static/images/carousel4.jpg" alt="MY ALT TEXT"/>
       <h2 class="subtitle has-text-centered">
         Fourth image description.
       </h2>
-    </div>
+    </div> -->
   </div>
 </div>
 </div>
 </section>
 <!-- End image carousel -->
 
-
-
-
 <!-- Youtube video -->
-<section class="hero is-small is-light">
+<!-- <section class="hero is-small is-light">
   <div class="hero-body">
     <div class="container">
-      <!-- Paper video. -->
       <h2 class="title is-3">Video Presentation</h2>
       <div class="columns is-centered has-text-centered">
         <div class="column is-four-fifths">
-          
           <div class="publication-video">
-            <!-- Youtube embed code here -->
             <iframe src="https://www.youtube.com/embed/JkaxUblCGz0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
           </div>
         </div>
       </div>
     </div>
   </div>
-</section>
+</section> -->
 <!-- End youtube video -->
 
 
 <!-- Video carousel -->
-<section class="hero is-small">
+<!-- <section class="hero is-small">
   <div class="hero-body">
     <div class="container">
       <h2 class="title is-3">Another Carousel</h2>
       <div id="results-carousel" class="carousel results-carousel">
         <div class="item item-video1">
           <video poster="" id="video1" autoplay controls muted loop height="100%">
-            <!-- Your video file here -->
             <source src="static/videos/carousel1.mp4"
             type="video/mp4">
           </video>
         </div>
         <div class="item item-video2">
           <video poster="" id="video2" autoplay controls muted loop height="100%">
-            <!-- Your video file here -->
             <source src="static/videos/carousel2.mp4"
             type="video/mp4">
           </video>
         </div>
         <div class="item item-video3">
           <video poster="" id="video3" autoplay controls muted loop height="100%">\
-            <!-- Your video file here -->
             <source src="static/videos/carousel3.mp4"
             type="video/mp4">
           </video>
@@ -258,16 +359,12 @@
       </div>
     </div>
   </div>
-</section>
+</section> -->
 <!-- End video carousel -->
 
 
-
-
-
-
 <!-- Paper poster -->
-<section class="hero is-small is-light">
+<!-- <section class="hero is-small is-light">
   <div class="hero-body">
     <div class="container">
       <h2 class="title">Poster</h2>
@@ -277,7 +374,7 @@
         
       </div>
     </div>
-  </section>
+  </section> -->
 <!--End paper poster -->
 
 
@@ -285,21 +382,24 @@
   <section class="section" id="BibTeX">
     <div class="container is-max-desktop content">
       <h2 class="title">BibTeX</h2>
-      <pre><code>BibTex Code Here</code></pre>
+      <pre><code>@article{vinod2023teglo,
+  author    = {Vinod, Vishal and Shah, Tanmay and Lagun, Dmitry},
+  title     = {{TEGLO}: High Fidelity Canonical Texture Mapping from Single-View Images},
+  journal   = {arXiv:preprint},
+  year      = {2023},
+}</code></pre>
     </div>
 </section>
 <!--End BibTex citation -->
 
-
-  <footer class="footer">
+<footer class="footer">
   <div class="container">
     <div class="columns is-centered">
       <div class="column is-8">
         <div class="content">
 
           <p>
-            This page was built using the <a href="https://github.com/eliahuhorwitz/Academic-project-page-template" target="_blank">Academic Project Page Template</a>.
-            You are free to borrow the of this website, we just ask that you link back to this page in the footer. <br> This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
+            This website is licensed under a <a rel="license"  href="http://creativecommons.org/licenses/by-sa/4.0/" target="_blank">Creative
             Commons Attribution-ShareAlike 4.0 International License</a>.
           </p>
 
